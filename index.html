@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>رحلة قطرة الماء — ورشة Claude.ai للمعلمات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EAF7FC; --surface:#FFFFFF; --ink:#0B2545; --muted:#46617F; --line:#CDE5EF; --soft:#DDF1F8;
+  --ocean:#0077B6; --aqua:#00B4D8; --sky:#90E0EF; --sun:#FFB703; --coral:#F26B5B; --green:#2A9D8F; --violet:#7B61FF;
+  --deep:#063A63; --on-deep:#FFFFFF;
+  --display:"Lalezar","IBM Plex Sans Arabic",Tahoma,Arial,sans-serif;
+  --body:"IBM Plex Sans Arabic",Tahoma,Arial,sans-serif;
+  color-scheme:light; box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#06192B; --surface:#0D2841; --ink:#EAF4FB; --muted:#9EB9D0; --line:#1D4566; --soft:#123553; --deep:#03111F; color-scheme:dark;}}
+:root[data-theme="dark"]{--bg:#06192B; --surface:#0D2841; --ink:#EAF4FB; --muted:#9EB9D0; --line:#1D4566; --soft:#123553; --deep:#03111F; color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.75}
+h1,h2,h3{font-family:var(--display);font-weight:400;line-height:1.25;margin:0;letter-spacing:0}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+svg{display:block}
+
+/* ---------- HERO ---------- */
+.hero{position:relative;background:linear-gradient(#5CC8EC,#BDEBFA 70%);color:#0B2545;overflow:hidden}
+.hero-scene{width:100%;height:auto;min-height:420px;max-height:640px}
+.hero-text{position:absolute;inset:0;display:flex;align-items:flex-start;padding-top:38px}
+.hero-card{background:rgba(255,255,255,.88);backdrop-filter:blur(6px);border-radius:28px;padding:22px 26px;max-width:520px;box-shadow:0 18px 40px rgba(6,58,99,.18)}
+.mark{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--ocean)}
+.mark .ws{direction:ltr;font-family:var(--body);font-weight:700;font-size:20px}
+.hero h1{font-size:clamp(40px,6.5vw,76px);color:#063A63;margin:6px 0 4px}
+.hero p{margin:0 0 12px;color:#26476A;font-size:17px}
+.byline{display:inline-flex;align-items:center;gap:8px;background:#063A63;color:#fff;border-radius:99px;padding:6px 16px;font-weight:700;font-size:16px}
+.topbtns{position:absolute;top:14px;left:18px;display:flex;gap:8px;z-index:3}
+.pill{border:0;background:rgba(6,58,99,.85);color:#fff;border-radius:99px;padding:6px 14px;font-size:14px;font-weight:700}
+@media (max-width:760px){
+  .hero-text{position:static;padding:0 0 20px;background:#BDEBFA}
+  .hero-card{margin-top:-30px;position:relative}
+  .hero-scene{min-height:260px}
+}
+
+/* ---------- NAV ---------- */
+.nav{position:sticky;top:0;z-index:20;background:var(--surface);box-shadow:0 1px 0 var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--surface)}
+.nav .wrap{display:flex;gap:6px;overflow-x:auto;padding-top:10px;padding-bottom:10px;scrollbar-width:none}
+.nav a{white-space:nowrap;text-decoration:none;color:var(--muted);font-weight:700;padding:7px 15px;border-radius:99px;font-size:15px}
+.nav a:hover,.nav a.on{background:var(--ink);color:var(--surface)}
+
+/* ---------- SECTIONS ---------- */
+section{padding:64px 0}
+section:nth-of-type(even){background:var(--surface)}
+.head{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin-bottom:26px}
+.ico{width:74px;height:74px;border-radius:24px;display:grid;place-items:center;font-size:38px;color:#fff;transform:rotate(-6deg)}
+.head h2{font-size:clamp(30px,4.4vw,46px);color:var(--ink)}
+.head p{margin:2px 0 0;color:var(--muted);max-width:68ch}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:18px;counter-reset:s}
+.how div{background:var(--soft);border-radius:18px;padding:14px 16px;font-size:15px;counter-increment:s;position:relative;padding-top:40px}
+.how div::before{content:"الخطوة " counter(s);position:absolute;top:10px;right:16px;font-weight:700;color:var(--ocean);font-size:14px}
+.how b{display:block;font-size:16px}
+.prompt{background:var(--deep);color:#DDEFFC;border-radius:20px;padding:18px 20px;margin:0 0 26px;font-size:15.5px;position:relative}
+.prompt .lab{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.prompt .lab span{font-weight:700;color:var(--sun)}
+.prompt p{margin:0}
+.copy{border:0;background:var(--sun);color:#3A2600;padding:6px 16px;border-radius:99px;font-size:14px;font-weight:700}
+.copy.done{background:#2BB673;color:#fff}
+.stage{background:var(--surface);border:1px solid var(--line);border-radius:26px;padding:20px;box-shadow:0 14px 34px rgba(6,58,99,.08)}
+section:nth-of-type(even) .stage{background:var(--bg)}
+.result-tag{display:inline-block;background:var(--green);color:#fff;font-weight:700;border-radius:99px;padding:3px 14px;font-size:14px;margin-bottom:10px}
+.btn{border:0;background:var(--ocean);color:#fff;font-weight:700;padding:11px 26px;border-radius:99px;font-size:17px;box-shadow:0 6px 0 #04517D;transition:transform .1s}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #04517D}
+.btn.alt{background:var(--sun);color:#3A2600;box-shadow:0 6px 0 #C98E00}
+.center{text-align:center}
+
+/* plan */
+details.plan summary{cursor:pointer;font-weight:700;color:var(--ocean);font-size:17px}
+.tablewrap{overflow-x:auto;margin-top:12px}
+table{width:100%;min-width:680px;border-collapse:collapse;font-size:15px}
+th,td{text-align:right;padding:11px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--soft);font-weight:700}
+td:first-child{font-weight:700;color:var(--ocean);white-space:nowrap}
+
+/* adventure */
+.adv svg{width:100%;height:auto;border-radius:20px}
+.station{cursor:pointer}
+.station.locked{cursor:not-allowed;opacity:.55}
+.station circle.ring{transition:.3s}
+.station.open circle.ring{animation:pulse 1.4s infinite}
+@keyframes pulse{50%{r:40}}
+#advDrop{transition:transform 1.2s cubic-bezier(.5,-.3,.4,1.3)}
+.modal{position:fixed;inset:0;background:rgba(3,17,31,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+.modal.show{display:flex}
+.mbox{background:var(--surface);color:var(--ink);border-radius:26px;max-width:520px;width:100%;padding:24px;text-align:center;animation:pop .35s}
+@keyframes pop{from{transform:scale(.8);opacity:0}}
+.mbox .em{font-size:54px}
+.mbox h3{font-size:30px;margin:4px 0}
+.opts{display:grid;gap:10px;margin-top:14px}
+.opt{border:2px solid var(--line);background:var(--bg);border-radius:16px;padding:12px;font-weight:700;font-size:17px}
+.opt:hover{border-color:var(--aqua)}
+.opt.ok{background:#2BB673;border-color:#2BB673;color:#fff}
+.opt.no{background:var(--coral);border-color:var(--coral);color:#fff;animation:shake .4s}
+@keyframes shake{25%{transform:translateX(6px)}75%{transform:translateX(-6px)}}
+.hint{color:var(--muted);min-height:1.6em;margin-top:8px;font-weight:500}
+
+/* race */
+.racebox{position:relative;border-radius:22px;overflow:hidden;touch-action:none}
+#raceCv{width:100%;height:440px;display:block;background:linear-gradient(#7FD3F0,#D6F3FC)}
+.overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(6,58,99,.72);color:#fff;text-align:center;padding:20px}
+.overlay h3{font-size:40px}
+.overlay[hidden]{display:none}
+
+/* group */
+.teams{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:16px}
+.team{text-align:center}
+.tank{height:170px;border:3px solid var(--ink);border-top:0;border-radius:0 0 22px 22px;position:relative;overflow:hidden;background:var(--surface);margin:0 auto 8px;width:90%}
+.tank i{position:absolute;bottom:0;left:0;right:0;height:0;transition:height .8s cubic-bezier(.3,1.4,.5,1);background:var(--c)}
+.tank i::before{content:"";position:absolute;top:-8px;left:-10%;width:120%;height:16px;background:var(--c);border-radius:50%;animation:wob 2s infinite ease-in-out}
+@keyframes wob{50%{transform:translateX(8%)}}
+.tank b{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--display);font-size:38px;z-index:1;color:var(--ink)}
+.team h3{font-size:20px}
+.plus{border:0;background:var(--c);color:#fff;font-weight:700;border-radius:99px;padding:6px 18px;margin-top:6px}
+.gq{background:var(--deep);color:#fff;border-radius:22px;padding:22px;text-align:center}
+.gq .qn{color:var(--sun);font-weight:700}
+.gq .qt{font-family:var(--display);font-size:clamp(24px,3.4vw,36px);margin:6px 0}
+.gq .ans{color:#8FF0C8;font-weight:700;min-height:1.6em}
+.gtools{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.gtimer{font-family:var(--display);font-size:34px;color:var(--sun)}
+@media (max-width:700px){.teams{grid-template-columns:repeat(2,1fr)}}
+
+/* individual */
+.ind{max-width:720px;margin:0 auto;text-align:center}
+.ind input{font:inherit;font-size:20px;padding:10px 18px;border-radius:99px;border:2px solid var(--line);background:var(--bg);color:var(--ink);text-align:center;width:min(320px,100%)}
+.stars{color:var(--sun);font-size:26px;letter-spacing:3px}
+.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden;margin:12px 0 16px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--aqua),var(--ocean));width:100%;transition:width 1s linear}
+.iq{font-family:var(--display);font-size:clamp(24px,3.4vw,34px);margin:6px 0 16px}
+.og{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+#cert{border:10px solid var(--aqua);outline:3px solid var(--ocean);outline-offset:-20px;border-radius:24px;padding:36px 22px;background:#fff;color:#0B2545;position:relative;overflow:hidden}
+#cert h3{font-size:42px;color:var(--ocean)}
+#cert .nm{font-family:var(--display);font-size:46px;color:#F26B5B;margin:6px 0}
+@media (max-width:600px){.og{grid-template-columns:1fr}}
+@media print{
+  body *{visibility:hidden} #cert,#cert *{visibility:visible}
+  #cert{position:absolute;inset:20px}
+}
+
+/* story & video */
+.screen{position:relative;border-radius:24px;overflow:hidden;background:#BDEBFA;aspect-ratio:16/9}
+.screen svg{width:100%;height:100%}
+.scene-in{animation:fadein .7s}
+@keyframes fadein{from{opacity:0;transform:scale(1.04)}}
+.caption{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(3,17,31,.85));color:#fff;padding:40px 22px 16px;font-size:clamp(15px,2vw,20px);font-weight:500}
+.story-text{font-size:clamp(17px,2.2vw,21px);margin:16px 0 8px;min-height:3.4em}
+.choices{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.ctrls{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.vbar{flex:1;min-width:160px;height:10px;background:var(--line);border-radius:99px;overflow:hidden;cursor:pointer}
+.vbar i{display:block;height:100%;width:0;background:var(--coral)}
+.dots{display:flex;gap:6px;justify-content:center;margin-top:10px}
+.dots span{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots span.on{background:var(--ocean)}
+/* scene animations */
+.wv{animation:wave 4s ease-in-out infinite}
+.wv2{animation:wave 5s ease-in-out infinite reverse}
+@keyframes wave{50%{transform:translateX(-30px)}}
+.rays{transform-origin:center;transform-box:fill-box;animation:spin 18s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vap{animation:rise 3s ease-in infinite;opacity:0}
+@keyframes rise{0%{transform:translateY(0);opacity:0}30%{opacity:.9}100%{transform:translateY(-140px);opacity:0}}
+.rain line{animation:fall 1s linear infinite}
+@keyframes fall{from{transform:translateY(-60px)}to{transform:translateY(120px)}}
+.cl{animation:drift 9s ease-in-out infinite}
+@keyframes drift{50%{transform:translateX(24px)}}
+.flow{stroke-dasharray:14 12;animation:flow 1.2s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-26}}
+.bob{animation:bob 2.2s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.blink{animation:blink 4s infinite;transform-box:fill-box;transform-origin:center}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+
+/* library */
+.lib{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.lcard{background:var(--bg);border:1px solid var(--line);border-radius:22px;padding:18px;display:flex;flex-direction:column}
+section:nth-of-type(odd) .lcard{background:var(--surface)}
+.lcard h3{font-size:24px;display:flex;align-items:center;gap:8px}
+.lcard p{font-size:15px;color:var(--muted);flex:1;margin:8px 0 14px}
+.lcard .copy{align-self:flex-start}
+
+footer{background:var(--deep);color:#CFE6F5;text-align:center;padding:34px 20px}
+footer .who{font-family:var(--display);font-size:28px;color:#fff}
+
+.confetti{position:fixed;top:-20px;width:10px;height:16px;z-index:60;pointer-events:none;animation:conf 2.6s linear forwards}
+@keyframes conf{to{transform:translateY(105vh) rotate(720deg)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="top">
+  <div class="topbtns">
+    <button class="pill" id="soundBtn" aria-pressed="true">🔊 الأصوات</button>
+    <button class="pill" id="themeBtn">◐ الوضع</button>
+  </div>
+  <svg class="hero-scene" viewBox="0 0 1200 560" preserveAspectRatio="xMidYMax slice" aria-hidden="true" id="heroSvg">
+    <defs>
+      <linearGradient id="hsea" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00B4D8"/><stop offset="1" stop-color="#0077B6"/></linearGradient>
+      <linearGradient id="hmt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#C98F5F"/><stop offset="1" stop-color="#8A5A3B"/></linearGradient>
+      <radialGradient id="hsun"><stop offset="0" stop-color="#FFE38A"/><stop offset="1" stop-color="#FFB703"/></radialGradient>
+    </defs>
+    <!-- sun -->
+    <g transform="translate(1080 90)">
+      <g class="rays"><g stroke="#FFC93C" stroke-width="8" stroke-linecap="round">
+        <line x1="0" y1="-78" x2="0" y2="-100"/><line x1="0" y1="78" x2="0" y2="100"/><line x1="-78" y1="0" x2="-100" y2="0"/><line x1="78" y1="0" x2="100" y2="0"/>
+        <line x1="55" y1="55" x2="71" y2="71"/><line x1="-55" y1="-55" x2="-71" y2="-71"/><line x1="55" y1="-55" x2="71" y2="-71"/><line x1="-55" y1="55" x2="-71" y2="71"/></g></g>
+      <circle r="62" fill="url(#hsun)"/>
+    </g>
+    <!-- clouds -->
+    <g class="cl" fill="#fff"><ellipse cx="560" cy="110" rx="90" ry="42"/><ellipse cx="500" cy="125" rx="60" ry="34"/><ellipse cx="625" cy="128" rx="62" ry="32"/></g>
+    <g class="cl" fill="#fff" opacity=".8" style="animation-duration:13s"><ellipse cx="260" cy="70" rx="60" ry="26"/><ellipse cx="300" cy="80" rx="44" ry="22"/></g>
+    <!-- mountains (Hajar) -->
+    <path d="M0 400 L120 210 L210 300 L330 150 L470 330 L560 270 L660 420 L0 420Z" fill="url(#hmt)"/>
+    <path d="M330 150 L300 200 L330 190 L360 215 Z M120 210 L100 245 L125 238 L145 255Z" fill="#F3E6D6" opacity=".85"/>
+    <!-- falaj + village -->
+    <path d="M300 330 C 330 380, 260 420, 210 450 S 120 500, 60 520" fill="none" stroke="#1E88C8" stroke-width="16" stroke-linecap="round"/>
+    <path class="flow" d="M300 330 C 330 380, 260 420, 210 450 S 120 500, 60 520" fill="none" stroke="#9EE6FA" stroke-width="5" stroke-linecap="round"/>
+    <rect x="0" y="470" width="660" height="90" fill="#7CB66B"/>
+    <g fill="#E9D3B0" stroke="#B88F5E" stroke-width="2"><rect x="380" y="440" width="70" height="50"/><rect x="455" y="455" width="50" height="35"/><rect x="384" y="430" width="16" height="12"/></g>
+    <g><rect x="160" y="420" width="10" height="70" fill="#7A5230"/><g fill="#2A9D8F"><path d="M165 420 q-50 -10 -60 20 q30 -20 60 -20z"/><path d="M165 420 q50 -10 60 20 q-30 -20 -60 -20z"/><path d="M165 420 q-10 -45 -45 -45 q30 15 45 45z"/><path d="M165 420 q10 -45 45 -45 q-30 15 -45 45z"/></g></g>
+    <g transform="translate(90 10)"><rect x="160" y="430" width="9" height="60" fill="#7A5230"/><g fill="#36B37E"><path d="M164 430 q-44 -8 -52 18 q26 -18 52 -18z"/><path d="M164 430 q44 -8 52 18 q-26 -18 -52 -18z"/><path d="M164 430 q-8 -40 -40 -40 q26 13 40 40z"/></g></g>
+    <!-- sea -->
+    <path d="M640 430 Q 900 400 1200 410 L1200 560 L620 560 Z" fill="url(#hsea)"/>
+    <path class="wv" d="M620 450 q 40 -16 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0" fill="none" stroke="#CAF0F8" stroke-width="5" stroke-linecap="round"/>
+    <path class="wv2" d="M640 495 q 40 -14 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0 t 80 0" fill="none" stroke="#90E0EF" stroke-width="4" stroke-linecap="round"/>
+    <!-- journey path & drop -->
+    <path id="journey" d="M960 470 C 980 300, 760 180, 600 150 C 520 140, 420 170, 330 200 C 300 260, 300 300, 300 330 C 320 390, 230 430, 200 455 C 150 490, 100 510, 60 520" fill="none"/>
+    <g id="heroDrop">
+      <g class="drop-ch">
+        <path d="M0 -34 C 14 -14 22 -2 22 10 A22 22 0 0 1 -22 10 C -22 -2 -14 -14 0 -34Z" fill="#48CAE4" stroke="#0077B6" stroke-width="3"/>
+        <ellipse cx="-8" cy="-2" rx="5" ry="6" fill="#fff"/><ellipse cx="8" cy="-2" rx="5" ry="6" fill="#fff"/>
+        <circle cx="-7" cy="-1" r="2.6" fill="#0B2545"/><circle cx="9" cy="-1" r="2.6" fill="#0B2545"/>
+        <path d="M-7 10 Q0 16 7 10" stroke="#0B2545" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <ellipse cx="-12" cy="-16" rx="4" ry="7" fill="#fff" opacity=".6" transform="rotate(25 -12 -16)"/>
+      </g>
+      <animateMotion dur="12s" repeatCount="indefinite" rotate="0"><mpath href="#journey"/></animateMotion>
+    </g>
+  </svg>
+  <div class="hero-text"><div class="wrap">
+    <div class="hero-card">
+      <div class="mark"><svg width="26" height="30" viewBox="-24 -36 48 70" aria-hidden="true"><path d="M0 -34 C 14 -14 22 -2 22 10 A22 22 0 0 1 -22 10 C -22 -2 -14 -14 0 -34Z" fill="#00B4D8"/></svg><span class="ws">Claude.ai</span><span>ورشة للمعلمات</span></div>
+      <h1>رحلة قطرة الماء</h1>
+      <p>درس واحد، وسبعة أشكال تعليمية صنعها Claude من برومبتات جاهزة: خطة درس، مغامرة، سباق، مسابقة جماعية وفردية، قصة تفاعلية، وفيديو.</p>
+      <span class="byline">💧 إعداد الأستاذة عبير صالح اليحمدية</span>
+    </div>
+  </div></div>
+</header>
+
+<nav class="nav" aria-label="أقسام الموقع"><div class="wrap">
+  <a href="#plan">📝 خطة الدرس</a><a href="#adventure">🗺️ المغامرة</a><a href="#race">🏁 السباق</a><a href="#group">👥 المسابقة الجماعية</a><a href="#solo">⭐ المسابقة الفردية</a><a href="#story">📖 القصة</a><a href="#video">🎬 الفيديو</a><a href="#prompts">📋 البرومبتات</a>
+</div></nav>
+
+<main>
+<!-- ================= PLAN ================= -->
+<section id="plan"><div class="wrap">
+  <div class="head"><div class="ico" style="background:var(--ocean)">📝</div><div><h2>طريقة إعداد خطة الدرس</h2><p>اكتبي البرومبت، أرفقي صورة صفحة الكتاب إن وُجدت، ثم حسّني النتيجة بالحوار.</p></div></div>
+  <div class="how">
+    <div><b>حدّدي الدور والمادة</b>«أنت معلمة خبيرة في العلوم للصفوف الأولى»</div>
+    <div><b>اذكري الدرس والصف والزمن</b>رحلة قطرة الماء، الصف الثالث، 40 دقيقة</div>
+    <div><b>اطلبي العناصر كاملة</b>الأهداف، التهيئة، الاستراتيجيات، التمايز، التقويم</div>
+    <div><b>حدّدي الشكل وحسّني</b>جدول منظم، ثم: «حوّليها إلى ملف Word»</div>
+  </div>
+  <div class="prompt"><div class="lab"><span>البرومبت الجاهز</span><button class="copy" data-copy="plan">نسخ</button></div><p data-p="plan"></p></div>
+  <div class="stage">
+    <span class="result-tag">النتيجة</span>
+    <details class="plan" open><summary>خطة درس «رحلة قطرة الماء» — الصف الثالث — 40 دقيقة</summary>
+    <div class="tablewrap"><table>
+      <thead><tr><th>المرحلة</th><th>الزمن</th><th>دور المعلمة</th><th>دور الطالب</th></tr></thead>
+      <tbody>
+        <tr><td>الأهداف</td><td>—</td><td>أن يرتّب الطالب مراحل دورة الماء الأربع، ويشرح كل مرحلة بجملة، ويربطها بالفلج في بيئته.</td><td>يقرأ الأهداف ويتوقع موضوع الدرس.</td></tr>
+        <tr><td>التهيئة</td><td>5 د</td><td>تعرض صورة فلج وتسأل: «من أين جاء هذا الماء؟ وإلى أين سيذهب؟»</td><td>يشارك توقعاته.</td></tr>
+        <tr><td>العرض</td><td>10 د</td><td>تعرض فيديو الرحلة ثم تتوقف عند كل مرحلة.</td><td>يسمّي المرحلة ويقلّدها بحركة جسدية.</td></tr>
+        <tr><td>تعلّم نشط</td><td>10 د</td><td>فكّر-زاوج-شارك، ثم لعبة المغامرة على السبورة الذكية.</td><td>يجيب مع زميله ويفتح المحطات.</td></tr>
+        <tr><td>نشاط جماعي</td><td>7 د</td><td>تدير المسابقة الجماعية بين أربعة فرق.</td><td>يتعاون الفريق للإجابة وملء خزانه.</td></tr>
+        <tr><td>التمايز</td><td>ضمن الأنشطة</td><td>المتفوقون: «ماذا يحدث لو لم تتبخر المياه؟» المتعثرون: بطاقات مصوّرة للترتيب.</td><td>ينجز المهمة حسب مستواه.</td></tr>
+        <tr><td>التقويم</td><td>5 د</td><td>المسابقة الفردية وشهادة التقدير.</td><td>يحل منفردًا ويحصل على شهادته.</td></tr>
+        <tr><td>الواجب</td><td>3 د</td><td>رسم رحلة القطرة من البحر إلى فلج القرية.</td><td>يرسم ويكتب اسم كل مرحلة.</td></tr>
+      </tbody></table></div></details>
+  </div>
+</div></section>
+
+<!-- ================= ADVENTURE ================= -->
+<section id="adventure"><div class="wrap">
+  <div class="head"><div class="ico" style="background:var(--green)">🗺️</div><div><h2>لعبة المغامرة: افتحي المحطات</h2><p>رافقي لؤلؤة من البحر إلى الفلج. كل إجابة صحيحة تفتح المحطة التالية وتحرّك القطرة على الخريطة.</p></div></div>
+  <div class="how">
+    <div><b>اختاري شكل اللعبة</b>مغامرة، خريطة، محطات تُفتح بالتتابع</div>
+    <div><b>حدّدي المحطات</b>البحر، التبخر، الغيمة، المطر، الفلج</div>
+    <div><b>اطلبي المؤثرات</b>رسوم، حركة، أصوات، كأس في النهاية</div>
+  </div>
+  <div class="prompt"><div class="lab"><span>البرومبت الجاهز</span><button class="copy" data-copy="adv">نسخ</button></div><p data-p="adv"></p></div>
+  <div class="stage adv">
+    <span class="result-tag">النتيجة — العبي الآن</span>
+    <svg viewBox="0 0 900 420" id="advMap" role="img" aria-label="خريطة مغامرة رحلة قطرة الماء">
+      <defs><linearGradient id="asky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8FDDF5"/><stop offset="1" stop-color="#E3F8FE"/></linearGradient></defs>
+      <rect width="900" height="420" fill="url(#asky)"/>
+      <circle cx="830" cy="70" r="40" fill="#FFB703"/>
+      <path d="M560 420 Q 760 360 900 370 L900 420Z" fill="#0096C7"/>
+      <path class="wv" d="M600 400 q30 -10 60 0 t60 0 t60 0 t60 0 t60 0" stroke="#CAF0F8" stroke-width="4" fill="none"/>
+      <g class="cl" fill="#fff"><ellipse cx="460" cy="70" rx="80" ry="34"/><ellipse cx="410" cy="82" rx="50" ry="26"/><ellipse cx="515" cy="84" rx="52" ry="26"/></g>
+      <path d="M0 330 L90 190 L170 260 L260 150 L360 300 L0 330Z" fill="#B07A50"/>
+      <rect x="0" y="330" width="620" height="90" fill="#86C06F"/>
+      <path class="flow" d="M200 300 C 180 340 120 360 60 380" stroke="#1E88C8" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <path d="M820 330 C 760 250 700 220 640 200 C 580 170 520 110 460 90 C 380 110 320 160 280 200 C 220 250 160 300 100 320" fill="none" stroke="#fff" stroke-width="7" stroke-dasharray="2 16" stroke-linecap="round"/>
+      <g id="stations"></g>
+      <g id="advDrop" style="transform:translate(820px,272px)">
+        <g class="bob"><path d="M0 -40 C 16 -16 26 -2 26 12 A26 26 0 0 1 -26 12 C -26 -2 -16 -16 0 -40Z" fill="#48CAE4" stroke="#0077B6" stroke-width="3"/>
+        <ellipse cx="-9" cy="0" rx="5" ry="6" fill="#fff"/><ellipse cx="9" cy="0" rx="5" ry="6" fill="#fff"/><circle cx="-8" cy="1" r="2.6" fill="#0B2545"/><circle cx="10" cy="1" r="2.6" fill="#0B2545"/>
+        <path d="M-7 12 Q0 18 7 12" stroke="#0B2545" stroke-width="2.4" fill="none" stroke-linecap="round"/></g>
+      </g>
+    </svg>
+    <p class="center" id="advStatus" style="font-weight:700;margin:12px 0 0">اضغطي على المحطة الأولى «البحر» لتبدأ المغامرة</p>
+    <div class="center"><button class="btn alt" id="advReset" style="margin-top:10px">ابدئي المغامرة من جديد</button></div>
+  </div>
+</div></section>
+
+<!-- ================= RACE ================= -->
+<section id="race-s"><div class="wrap" id="race">
+  <div class="head"><div class="ico" style="background:var(--coral)">🏁</div><div><h2>سباق تجميع القطرات</h2><p>حرّكي الدلو بالفأرة أو باللمس أو بالأسهم، واجمعي القطرات التي تحمل كلمات من دورة الماء فقط، خلال 45 ثانية.</p></div></div>
+  <div class="how">
+    <div><b>حدّدي الهدف</b>تجميع الإجابات الصحيحة وتجنّب الخاطئة</div>
+    <div><b>حدّدي التحكم</b>فأرة، لمس، أسهم لوحة المفاتيح</div>
+    <div><b>أضيفي التحدي</b>وقت، نقاط، سرعة تزداد تدريجيًا</div>
+  </div>
+  <div class="prompt"><div class="lab"><span>البرومبت الجاهز</span><button class="copy" data-copy="race">نسخ</button></div><p data-p="race"></p></div>
+  <div class="stage">
+    <span class="result-tag">النتيجة — العبي الآن</span>
+    <div class="racebox">
+      <canvas id="raceCv" aria-label="لعبة سباق تجميع القطرات"></canvas>
+      <div class="overlay" id="raceOv"><h3>سباق القطرات</h3><p id="raceMsg">اجمعي: تبخّر، تكاثف، هطول، غيمة… وابتعدي عن الكلمات الغريبة!</p><button class="btn alt" id="raceGo">ابدئي السباق</button></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ================= GROUP ================= -->
+<section id="group"><div class="wrap">
+  <div class="head"><div class="ico" style="background:var(--violet)">👥</div><div><h2>المسابقة الجماعية</h2><p>للسبورة الذكية: تقرأ المعلمة السؤال، يتشاور كل فريق، ثم تمنح النقطة للفريق الذي أجاب صحيحًا فيمتلئ خزانه بالماء.</p></div></div>
+  <div class="how">
+    <div><b>حدّدي الفرق</b>أربعة فرق بأسماء من الدرس</div>
+    <div><b>حدّدي الأسئلة</b>12 سؤالًا متدرجة الصعوبة</div>
+    <div><b>اطلبي لوحة النتائج</b>خزانات تمتلئ، مؤقت، احتفال بالفائز</div>
+  </div>
+  <div class="prompt"><div class="lab"><span>البرومبت الجاهز</span><button class="copy" data-copy="group">نسخ</button></div><p data-p="group"></p></div>
+  <div class="stage">
+    <span class="result-tag">النتيجة — جرّبيها مع فرقك</span>
+    <div class="gq"><div class="qn" id="gNum"></div><div class="qt" id="gQ"></div><div class="ans" id="gA"></div>
+      <div class="gtools"><span class="gtimer" id="gT">20</span><button class="btn alt" id="gShow">أظهري الإجابة</button><button class="btn" id="gNext">السؤال التالي</button></div></div>
+    <div class="teams" id="teams"></div>
+    <div class="center"><button class="pill" id="gReset" style="background:var(--muted);margin-top:14px">إعادة المسابقة</button></div>
+  </div>
+</div></section>
+
+<!-- ================= SOLO ================= -->
+<section id="solo"><div class="wrap">
+  <div class="head"><div class="ico" style="background:var(--sun)">⭐</div><div><h2>المسابقة الفردية</h2><p>يكتب الطالب اسمه، يجيب عن عشرة أسئلة بمؤقت ونجوم، ثم يحصل على شهادة تقدير باسمه قابلة للطباعة.</p></div></div>
+  <div class="how">
+    <div><b>اطلبي إدخال الاسم</b>لتظهر الشهادة باسم الطالب</div>
+    <div><b>نوّعي الأسئلة</b>اختيار من متعدد، وصح أو خطأ</div>
+    <div><b>اطلبي الشهادة</b>ملوّنة وقابلة للطباعة</div>
+  </div>
+  <div class="prompt"><div class="lab"><span>البرومبت الجاهز</span><button class="copy" data-copy="solo">نسخ</button></div><p data-p="solo"></p></div>
+  <div class="stage"><span class="result-tag">النتيجة — العبي الآن</span><div class="ind" id="solo-box"></div></div>
+</div></section>
+
+<!-- ================= STORY ================= -->
+<section id="story"><div class="wrap">
+  <div class="head"><div class="ico" style="background:var(--aqua)">📖</div><div><h2>القصة التفاعلية: لؤلؤة</h2><p>قطرة ماء تعيش في بحر عُمان. يختار الطالب ماذا تفعل، ويسمع الأمواج والريح والمطر وخرير الفلج.</p></div></div>
+  <div class="how">
+    <div><b>اصنعي البطلة</b>شخصية محبوبة باسم وبيئة عُمانية</div>
+    <div><b>قسّميها مشاهد</b>6 مشاهد، لكل مرحلة مشهد</div>
+    <div><b>أضيفي التفاعل</b>اختيارات، أصوات، راوٍ، أسئلة فهم</div>
+  </div>
+  <div class="prompt"><div class="lab"><span>البرومبت الجاهز</span><button class="copy" data-copy="story">نسخ</button></div><p data-p="story"></p></div>
+  <div class="stage">
+    <span class="result-tag">النتيجة — اقرئي واستمعي</span>
+    <div class="screen" id="stScreen"></div>
+    <div class="story-text center" id="stText"></div>
+    <div class="choices" id="stChoices"></div>
+    <div class="dots" id="stDots"></div>
+    <div class="ctrls"><button class="pill" id="stVoice">🗣️ استمعي إلى الراوي</button><button class="pill" id="stRestart" style="background:var(--muted)">من البداية</button></div>
+  </div>
+</div></section>
+
+<!-- ================= VIDEO ================= -->
+<section id="video"><div class="wrap">
+  <div class="head"><div class="ico" style="background:var(--ocean)">🎬</div><div><h2>الفيديو: رحلة قطرة الماء</h2><p>فيديو متحرك مدته دقيقة تقريبًا، بستة مشاهد وترجمة على الشاشة ومؤثرات صوتية، يُعرض في بداية الحصة.</p></div></div>
+  <div class="how">
+    <div><b>اطلبي السيناريو أولًا</b>مشاهد، راوٍ، مؤثرات، حركة</div>
+    <div><b>راجعي وعدّلي</b>اللغة والمدة وتسلسل المشاهد</div>
+    <div><b>حوّليه إلى فيديو</b>صفحة متحركة، أو أداة توليد فيديو</div>
+  </div>
+  <div class="prompt"><div class="lab"><span>البرومبت الجاهز</span><button class="copy" data-copy="video">نسخ</button></div><p data-p="video"></p></div>
+  <div class="stage">
+    <span class="result-tag">النتيجة — شغّلي الفيديو</span>
+    <div class="screen" id="vScreen"></div>
+    <div class="ctrls"><button class="btn" id="vPlay">▶ تشغيل</button><div class="vbar" id="vBar"><i id="vProg"></i></div><span id="vTime" style="font-weight:700;min-width:70px">0:00</span><label style="font-size:15px"><input type="checkbox" id="vNarr"> صوت الراوي</label></div>
+  </div>
+</div></section>
+
+<!-- ================= PROMPTS ================= -->
+<section id="prompts"><div class="wrap">
+  <div class="head"><div class="ico" style="background:var(--deep)">📋</div><div><h2>مكتبة البرومبتات الجاهزة</h2><p>انسخي البرومبت والصقيه في claude.ai. لتطبيقه على درس آخر، غيّري اسم الدرس والصف فقط.</p></div></div>
+  <div class="lib" id="lib"></div>
+  <div class="prompt" style="margin-top:22px"><div class="lab"><span>جمل متابعة لتحسين أي نتيجة</span></div>
+    <p>«بسّطي اللغة لتناسب الصف الأول» • «أضيفي مستوى ثانيًا أصعب» • «اجعلي الألوان أكثر بهجة» • «أضيفي أصواتًا عند الفوز» • «حوّليها إلى ملف Word أو PowerPoint». وتذكّري: راجعي المحتوى العلمي دائمًا قبل عرضه على الطلبة.</p></div>
+</div></section>
+</main>
+
+<footer><div class="who">💧 إعداد الأستاذة عبير صالح اليحمدية</div><div>ورشة Claude.ai للمعلمات — درس «رحلة قطرة الماء»</div></footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle"><div class="mbox"><div class="em" id="mEm"></div><h3 id="mTitle"></h3><p id="mQ" style="margin:4px 0 0;font-weight:700"></p><div class="opts" id="mOpts"></div><div class="hint" id="mHint"></div></div></div>
+
+<script>
+/* ---------- PROMPTS ---------- */
+const P={
+plan:"أنت معلمة خبيرة في العلوم للصفوف الأولى. صمّمي خطة درس متكاملة لطلبة الصف الثالث بعنوان «رحلة قطرة الماء» (دورة الماء في الطبيعة) مدتها 40 دقيقة، تتضمن: أهدافًا قابلة للقياس، تهيئة مشوّقة عن الفلج العُماني، استراتيجيتين للتعلم النشط، نشاطًا جماعيًا، تمايزًا للمتفوقين والمتعثرين، تقويمًا ختاميًا، وواجبًا منزليًا. اعرضيها في جدول منظم بالأعمدة: المرحلة، الزمن، دور المعلمة، دور الطالب.",
+adv:"صمّمي لعبة مغامرة تعليمية كصفحة ويب لطلبة الصف الثالث بعنوان «رحلة قطرة الماء». ارسمي خريطة ملوّنة فيها 5 محطات بالترتيب: البحر، التبخر، الغيمة، المطر على جبال الحجر، الفلج. كل محطة مقفلة حتى يجيب الطالب عن سؤال المحطة السابقة، وعند الإجابة الصحيحة تتحرك قطرة ماء مبتسمة على المسار إلى المحطة التالية. أضيفي تلميحًا عند الخطأ، أصواتًا للصح والخطأ، وكأسًا واحتفالًا في النهاية. كل النصوص بالعربية.",
+race:"صمّمي لعبة سباق كصفحة ويب لطلبة الصف الثالث عن «دورة الماء»: قطرات ماء تتساقط من الأعلى، تحمل كل قطرة كلمة؛ بعضها من دورة الماء (تبخر، تكاثف، هطول، غيمة، فلج) وبعضها غريب (رمل، قلم، نار). يحرّك الطالب دلوًا بالفأرة أو اللمس أو الأسهم ليجمع الكلمات الصحيحة ويتجنب الخاطئة خلال 45 ثانية، مع سرعة تزداد تدريجيًا، عداد نقاط، أصوات، ورسالة تشجيعية في النهاية.",
+group:"أنشئي صفحة مسابقة جماعية للسبورة الذكية عن «رحلة قطرة الماء» لطلبة الصف الثالث: أربعة فرق (الغيمة، المطر، الفلج، البحر) بألوان مختلفة، و12 سؤالًا متدرجة الصعوبة يظهر كل منها بخط كبير مع مؤقت 20 ثانية وزر «أظهري الإجابة». تحت كل فريق زر يمنح نقطة، ولوحة النتائج على شكل خزانات ماء تمتلئ تدريجيًا. أضيفي أصواتًا حماسية واحتفالًا يعلن الفريق الفائز.",
+solo:"صمّمي مسابقة فردية كصفحة ويب عن «دورة الماء» لطلبة الصف الثالث: يكتب الطالب اسمه أولًا، ثم يجيب عن 10 أسئلة متنوعة (اختيار من متعدد، وصح أو خطأ) بمؤقت لكل سؤال ونجوم وأصوات تعزيز. في النهاية تظهر شهادة تقدير ملوّنة مزيّنة برسوم القطرات، تحمل اسم الطالب ودرجته وعبارة تشجيعية، مع زر للطباعة.",
+story:"اكتبي قصة تفاعلية كصفحة ويب لطلبة الصف الثالث، بطلتها قطرة ماء مبتسمة اسمها «لؤلؤة» تعيش في بحر عُمان، وتمر بمراحل دورة الماء حتى تصل إلى فلج في قرية جبلية تسقي النخيل. اجعليها 6 مشاهد مرسومة برسوم متحركة بسيطة (أمواج، شمس، بخار، غيوم، مطر، فلج)، مع مؤثرات صوتية لكل مشهد، وزر لسماع الراوي، وموقفين يختار فيهما الطالب ماذا تفعل لؤلؤة، وسؤالي فهم في النهاية.",
+video:"اكتبي سيناريو فيديو تعليمي مدته دقيقة واحدة لطلبة الصف الثالث عن «رحلة قطرة الماء» في بيئة عُمانية (بحر، جبال الحجر، فلج، نخيل). قسّميه إلى 6 مشاهد، ولكل مشهد: الوصف البصري، نص الراوي بجملتين قصيرتين، المؤثرات الصوتية، والحركة. بعد أن أوافق على السيناريو، حوّليه إلى فيديو متحرك في صفحة ويب بزر تشغيل وشريط تقدم وترجمة على الشاشة."
+};
+document.querySelectorAll('[data-p]').forEach(p=>p.textContent=P[p.dataset.p]);
+
+/* ---------- THEME & SOUND ---------- */
+const root=document.documentElement;
+try{const t=localStorage.getItem('wj-theme');if(t)root.dataset.theme=t;}catch(e){}
+document.getElementById('themeBtn').onclick=()=>{const dark=root.dataset.theme?root.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;root.dataset.theme=dark?'light':'dark';try{localStorage.setItem('wj-theme',root.dataset.theme)}catch(e){}};
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(reduced){try{document.getElementById('heroSvg').pauseAnimations()}catch(e){}}
+
+const S={ctx:null,on:true,amb:null,
+  c(){if(!this.ctx){const A=window.AudioContext||window.webkitAudioContext;if(!A)return null;this.ctx=new A()}if(this.ctx.state==='suspended')this.ctx.resume();return this.ctx},
+  notes(fs,type='triangle',step=.11,len=.22,vol=.18){if(!this.on)return;const a=this.c();if(!a)return;fs.forEach((f,i)=>{const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+i*step;o.type=type;o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+len);o.connect(g).connect(a.destination);o.start(t);o.stop(t+len+.02)})},
+  ok(){this.notes([523,659,784])}, no(){this.notes([300,220],'sawtooth',.14,.25,.08)},
+  win(){this.notes([523,659,784,1046,784,1046],'triangle',.12,.3)},
+  plip(){if(!this.on)return;const a=this.c();if(!a)return;const o=a.createOscillator(),g=a.createGain(),t=a.currentTime;o.frequency.setValueAtTime(1200,t);o.frequency.exponentialRampToValueAtTime(400,t+.12);g.gain.setValueAtTime(.2,t);g.gain.exponentialRampToValueAtTime(.0001,t+.15);o.connect(g).connect(a.destination);o.start(t);o.stop(t+.16)},
+  tick(){this.notes([880],'square',.1,.05,.04)},
+  ambient(kind){this.stopAmb();if(!this.on||!kind)return;const a=this.c();if(!a)return;
+    const len=2*a.sampleRate,buf=a.createBuffer(1,len,a.sampleRate),d=buf.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;
+    const src=a.createBufferSource();src.buffer=buf;src.loop=true;const f=a.createBiquadFilter(),g=a.createGain();
+    const cfg={sea:['lowpass',500,.22,.18],wind:['bandpass',700,.12,.3],rain:['highpass',1800,.09,0],stream:['bandpass',1400,.1,2.2],sun:['lowpass',300,.05,.1]}[kind]||['lowpass',400,.1,0];
+    f.type=cfg[0];f.frequency.value=cfg[1];g.gain.value=cfg[2];
+    if(cfg[3]){const l=a.createOscillator(),lg=a.createGain();l.frequency.value=cfg[3];lg.gain.value=cfg[2]*.8;l.connect(lg).connect(g.gain);l.start();src._l=l}
+    src.connect(f).connect(g).connect(a.destination);src.start();this.amb=src},
+  stopAmb(){if(this.amb){try{this.amb.stop();this.amb._l&&this.amb._l.stop()}catch(e){}this.amb=null}}
+};
+const sb=document.getElementById('soundBtn');
+sb.onclick=()=>{S.on=!S.on;sb.textContent=S.on?'🔊 الأصوات':'🔇 الأصوات';sb.setAttribute('aria-pressed',S.on);if(!S.on){S.stopAmb();speechSynthesis&&speechSynthesis.cancel()}};
+
+function confetti(){if(reduced)return;const cols=['#FFB703','#00B4D8','#F26B5B','#2A9D8F','#7B61FF'];for(let i=0;i<70;i++){const s=document.createElement('span');s.className='confetti';s.style.left=Math.random()*100+'vw';s.style.background=cols[i%5];s.style.animationDelay=Math.random()*.8+'s';s.style.borderRadius=i%2?'50%':'2px';document.body.appendChild(s);setTimeout(()=>s.remove(),3600)}}
+
+function bindCopy(btn,getText,label){btn.onclick=async()=>{const t=getText();try{await navigator.clipboard.writeText(t)}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand('copy')}catch(_){}ta.remove()}
+  btn.textContent='تم النسخ ✓';btn.classList.add('done');setTimeout(()=>{btn.textContent=label||'نسخ';btn.classList.remove('done')},1600)}}
+document.querySelectorAll('[data-copy]').forEach(b=>bindCopy(b,()=>P[b.dataset.copy]));
+
+/* nav highlight */
+const links=[...document.querySelectorAll('.nav a')];
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){const id=e.target.id==='race-s'?'race':e.target.id;links.forEach(l=>l.classList.toggle('on',l.getAttribute('href')==='#'+id))}}),{rootMargin:'-45% 0px -50% 0px'});
+document.querySelectorAll('main section').forEach(s=>obs.observe(s));
+links.forEach(l=>l.onclick=e=>{e.preventDefault();document.querySelector(l.getAttribute('href')).scrollIntoView({behavior:reduced?'auto':'smooth'})});
+
+/* ---------- SCENE ART (shared by story & video) ---------- */
+const DROP=(x,y,s=1,mood='happy')=>`<g transform="translate(${x} ${y}) scale(${s})"><g class="bob"><path d="M0 -44 C 18 -18 28 -2 28 13 A28 28 0 0 1 -28 13 C -28 -2 -18 -18 0 -44Z" fill="#48CAE4" stroke="#0077B6" stroke-width="3"/><ellipse cx="-15" cy="-20" rx="5" ry="9" fill="#fff" opacity=".55" transform="rotate(25 -15 -20)"/><g class="blink"><ellipse cx="-10" cy="0" rx="6" ry="7" fill="#fff"/><ellipse cx="10" cy="0" rx="6" ry="7" fill="#fff"/><circle cx="-9" cy="1" r="3.2" fill="#0B2545"/><circle cx="11" cy="1" r="3.2" fill="#0B2545"/></g>${mood==='wow'?'<ellipse cx="0" cy="16" rx="5" ry="6" fill="#0B2545"/>':'<path d="M-9 13 Q0 22 9 13" stroke="#0B2545" stroke-width="2.6" fill="none" stroke-linecap="round"/>'}<circle cx="-18" cy="10" r="4" fill="#FF8FA3" opacity=".6"/><circle cx="18" cy="10" r="4" fill="#FF8FA3" opacity=".6"/></g></g>`;
+const SUN=(x,y,r=50)=>`<g transform="translate(${x} ${y})"><g class="rays" stroke="#FFC93C" stroke-width="7" stroke-linecap="round">${[0,45,90,135,180,225,270,315].map(a=>`<line x1="0" y1="${-(r+12)}" x2="0" y2="${-(r+30)}" transform="rotate(${a})"/>`).join('')}</g><circle r="${r}" fill="#FFB703"/><circle cx="-14" cy="-6" r="4" fill="#7A4A00"/><circle cx="14" cy="-6" r="4" fill="#7A4A00"/><path d="M-14 12 Q0 24 14 12" stroke="#7A4A00" stroke-width="3" fill="none"/></g>`;
+const CLOUD=(x,y,s=1,c='#fff')=>`<g class="cl"><g transform="translate(${x} ${y}) scale(${s})" fill="${c}"><ellipse cx="0" cy="0" rx="90" ry="44"/><ellipse cx="-70" cy="16" rx="60" ry="34"/><ellipse cx="72" cy="18" rx="62" ry="32"/></g></g>`;
+const SEA=(top=330)=>`<rect x="0" y="${top}" width="800" height="${450-top}" fill="#0096C7"/><path class="wv" d="M-40 ${top+10} q30 -14 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0" stroke="#CAF0F8" stroke-width="5" fill="none"/><path class="wv2" d="M-40 ${top+50} q30 -12 60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0 t60 0" stroke="#90E0EF" stroke-width="4" fill="none"/>`;
+const MTN=`<path d="M0 360 L110 170 L200 270 L320 120 L460 300 L560 230 L680 340 L800 260 L800 380 L0 380Z" fill="#B07A50"/><path d="M320 120 L292 170 L322 160 L350 186Z M110 170 L92 205 L114 198 L132 214Z" fill="#F3E6D6"/>`;
+const PALM=(x,y,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><rect x="-5" y="0" width="10" height="80" fill="#7A5230"/><g fill="#2A9D8F"><path d="M0 0 q-55 -10 -66 22 q32 -22 66 -22z"/><path d="M0 0 q55 -10 66 22 q-32 -22 -66 -22z"/><path d="M0 0 q-12 -50 -50 -50 q34 17 50 50z"/><path d="M0 0 q12 -50 50 -50 q-34 17 -50 50z"/></g></g>`;
+function scene(kind,uid){
+  const sky={sea:['#7FD3F0','#D8F4FD'],evap:['#FFD27A','#FFF1CF'],cloud:['#8FC9E8','#E2F3FB'],rain:['#6E8FA8','#BFD3E0'],falaj:['#8FDDF5','#E6FAFF'],end:['#FFB7A0','#FFE8C7']}[kind];
+  let g=`<defs><linearGradient id="sk${uid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${sky[0]}"/><stop offset="1" stop-color="${sky[1]}"/></linearGradient></defs><rect width="800" height="450" fill="url(#sk${uid})"/>`;
+  if(kind==='sea') g+=SUN(680,90)+CLOUD(220,90,.6)+SEA(300)+DROP(400,350,1.2);
+  if(kind==='evap') g+=SUN(400,80,62)+SEA(330)+[180,300,420,540,620].map((x,i)=>`<path class="vap" style="animation-delay:${i*.6}s" d="M${x} 330 q-12 -20 0 -40 q12 -20 0 -40" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/>`).join('')+DROP(400,250,.9,'wow');
+  if(kind==='cloud') g+=CLOUD(400,190,1.6)+CLOUD(130,90,.6)+CLOUD(680,110,.7)+[DROP(330,200,.5),DROP(400,180,.55),DROP(470,205,.5)].join('');
+  if(kind==='rain') g+=MTN+`<rect x="0" y="380" width="800" height="70" fill="#7CB66B"/>`+CLOUD(400,90,1.5,'#DDE6EE')+CLOUD(150,80,.9,'#CFD9E3')+`<g class="rain" stroke="#E0F7FF" stroke-width="4" stroke-linecap="round">${Array.from({length:26},(_,i)=>`<line x1="${30+i*29}" y1="${140+(i%3)*20}" x2="${24+i*29}" y2="${165+(i%3)*20}" style="animation-delay:${(i%5)*.18}s"/>`).join('')}</g>`+DROP(330,215,.7,'wow');
+  if(kind==='falaj') g+=MTN.replace('#B07A50','#C08B5E')+`<rect x="0" y="330" width="800" height="120" fill="#86C06F"/><path d="M800 300 C 620 330 520 380 380 390 S 120 400 0 430" stroke="#1E88C8" stroke-width="26" fill="none"/><path class="flow" d="M800 300 C 620 330 520 380 380 390 S 120 400 0 430" stroke="#9EE6FA" stroke-width="8" fill="none"/>`+PALM(140,300,1)+PALM(250,320,.8)+PALM(620,250,.9)+`<g fill="#EBD5B3" stroke="#B88F5E" stroke-width="2"><rect x="440" y="270" width="80" height="60"/><rect x="525" y="290" width="54" height="40"/></g>`+DROP(380,370,.75);
+  if(kind==='end') g+=SUN(400,330,90)+SEA(360)+CLOUD(160,90,.7)+CLOUD(650,110,.8)+DROP(400,230,1.3);
+  return `<svg viewBox="0 0 800 450" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${g}</svg>`;
+}
+
+/* ---------- ADVENTURE ---------- */
+const ST=[
+  {n:'البحر',x:820,y:330,e:'🌊',q:'أين تعيش لؤلؤة في بداية رحلتها؟',o:['في البحر','في الصحراء','في الغيمة'],a:0,h:'ابحثي عن المكان الأزرق الكبير المالح'},
+  {n:'التبخر',x:640,y:200,e:'☀️',q:'ماذا يحدث للماء عندما تسخّنه الشمس؟',o:['يتجمد','يتبخر ويصعد','يختفي للأبد'],a:1,h:'تذكّري البخار الصاعد من كوب الشاي الساخن'},
+  {n:'الغيمة',x:460,y:90,e:'☁️',q:'عندما يبرد بخار الماء في السماء يتحول إلى…',o:['غيوم','رمل','نار'],a:0,h:'شيء أبيض ناعم في السماء'},
+  {n:'المطر',x:280,y:200,e:'🌧️',q:'ماذا نسمي نزول الماء من الغيوم؟',o:['التبخر','الهطول','التكاثف'],a:1,h:'المطر يهطل على جبال الحجر'},
+  {n:'الفلج',x:100,y:320,e:'🌴',q:'ما فائدة الفلج في القرى العُمانية؟',o:['ينقل الماء ليسقي المزارع','يصنع الغيوم','يحرق النخيل'],a:0,h:'فكّري في النخيل العطشى'}
+];
+let advStep=0;const stG=document.getElementById('stations'),advDrop=document.getElementById('advDrop'),advStatus=document.getElementById('advStatus');
+function drawStations(){stG.innerHTML=ST.map((s,i)=>{const done=i<advStep,open=i===advStep;return `<g class="station ${open?'open':''} ${i>advStep?'locked':''}" data-i="${i}" tabindex="${open?0:-1}" role="button" aria-label="محطة ${s.n}${i>advStep?' مقفلة':''}">
+  <circle class="ring" cx="${s.x}" cy="${s.y}" r="34" fill="${done?'#2BB673':open?'#FFB703':'#fff'}" stroke="#063A63" stroke-width="4"/>
+  <text x="${s.x}" y="${s.y+11}" text-anchor="middle" font-size="30">${done?'✅':i>advStep?'🔒':s.e}</text>
+  <rect x="${s.x-48}" y="${s.y+40}" width="96" height="30" rx="15" fill="#063A63"/><text x="${s.x}" y="${s.y+61}" text-anchor="middle" font-size="17" fill="#fff" font-family="IBM Plex Sans Arabic,Tahoma" font-weight="700">${s.n}</text></g>`}).join('');
+  stG.querySelectorAll('.station').forEach(g=>{const go=()=>{const i=+g.dataset.i;if(i===advStep)openQ(i);else if(i>advStep){S.no();advStatus.textContent='هذه المحطة مقفلة؛ أجيبي عن المحطة الحالية أولًا 🔒'}};g.onclick=go;g.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}})}
+const modal=document.getElementById('modal');
+function openQ(i){const s=ST[i];document.getElementById('mEm').textContent=s.e;document.getElementById('mTitle').textContent='محطة '+s.n;document.getElementById('mQ').textContent=s.q;document.getElementById('mHint').textContent='';
+  const box=document.getElementById('mOpts');box.innerHTML='';s.o.forEach((o,k)=>{const b=document.createElement('button');b.className='opt';b.textContent=o;b.onclick=()=>{
+    if(k===s.a){b.classList.add('ok');S.ok();box.querySelectorAll('button').forEach(x=>x.disabled=true);setTimeout(()=>{modal.classList.remove('show');advance()},800)}
+    else{b.classList.add('no');S.no();document.getElementById('mHint').textContent='💡 تلميح: '+s.h;setTimeout(()=>b.classList.remove('no'),500)}};box.appendChild(b)});
+  modal.classList.add('show');box.querySelector('button').focus()}
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('show')});
+function advance(){advStep++;S.plip();
+  if(advStep<ST.length){const s=ST[advStep];advDrop.style.transform=`translate(${s.x}px,${s.y-110}px)`;advStatus.textContent=`أحسنتِ! انطلقت لؤلؤة إلى محطة «${s.n}»`;setTimeout(()=>advDrop.style.transform=`translate(${s.x}px,${s.y-58}px)`,1250)}
+  else{advStatus.textContent='🏆 مبروك! وصلت لؤلؤة إلى الفلج وسقت النخيل. أكملتِ الرحلة كاملة!';S.win();confetti()}
+  drawStations()}
+document.getElementById('advReset').onclick=()=>{advStep=0;advDrop.style.transform='translate(820px,272px)';advStatus.textContent='اضغطي على المحطة الأولى «البحر» لتبدأ المغامرة';drawStations()};
+drawStations();
+
+/* ---------- RACE ---------- */
+(function(){
+  const cv=document.getElementById('raceCv'),ctx=cv.getContext('2d'),ov=document.getElementById('raceOv'),msg=document.getElementById('raceMsg');
+  const GOOD=['تبخّر','تكاثف','هطول','غيمة','مطر','بخار','فلج','بحر','نهر','تجمّع'],BAD=['رمل','قلم','نار','حجر','كرسي','حديد'];
+  let W,H,dpr,bucket,drops,score,time,last,spawn,running=false,raf,keys={},pops=[];
+  function size(){dpr=window.devicePixelRatio||1;W=cv.clientWidth;H=cv.clientHeight;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
+  size();addEventListener('resize',()=>{size();if(!running)draw()});
+  function reset(){bucket={x:W/2,w:110};drops=[];score=0;time=45;spawn=0;pops=[]}
+  function add(){const good=Math.random()<.62;drops.push({x:40+Math.random()*(W-80),y:-30,v:70+(45-time)*3+Math.random()*40,t:good?GOOD[Math.random()*GOOD.length|0]:BAD[Math.random()*BAD.length|0],good})}
+  function dropShape(x,y,good){ctx.beginPath();ctx.moveTo(x,y-34);ctx.bezierCurveTo(x+16,y-12,x+26,y,x+26,y+10);ctx.arc(x,y+10,26,0,Math.PI);ctx.bezierCurveTo(x-26,y,x-16,y-12,x,y-34);ctx.fillStyle=good?'#48CAE4':'#9AA5B1';ctx.fill();ctx.lineWidth=2.5;ctx.strokeStyle=good?'#0077B6':'#5B6670';ctx.stroke()}
+  function draw(){ctx.clearRect(0,0,W,H);
+    // background hills & sun
+    ctx.fillStyle='#FFB703';ctx.beginPath();ctx.arc(W-60,60,34,0,7);ctx.fill();
+    ctx.fillStyle='#B07A50';ctx.beginPath();ctx.moveTo(0,H-60);ctx.lineTo(W*.18,H-180);ctx.lineTo(W*.32,H-110);ctx.lineTo(W*.5,H-200);ctx.lineTo(W*.7,H-90);ctx.lineTo(W,H-150);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.fill();
+    ctx.fillStyle='#86C06F';ctx.fillRect(0,H-50,W,50);
+    ctx.font='700 16px "IBM Plex Sans Arabic",Tahoma,sans-serif';ctx.textAlign='center';ctx.direction='rtl';
+    drops.forEach(d=>{dropShape(d.x,d.y,d.good);ctx.fillStyle='#0B2545';ctx.fillText(d.t,d.x,d.y+16)});
+    // bucket
+    const bx=bucket.x,by=H-50;ctx.fillStyle='#F26B5B';ctx.beginPath();ctx.moveTo(bx-bucket.w/2,by-50);ctx.lineTo(bx+bucket.w/2,by-50);ctx.lineTo(bx+bucket.w/2-14,by);ctx.lineTo(bx-bucket.w/2+14,by);ctx.closePath();ctx.fill();
+    ctx.fillStyle='#B8473B';ctx.fillRect(bx-bucket.w/2,by-54,bucket.w,8);
+    pops.forEach(p=>{ctx.globalAlpha=Math.max(0,p.a);ctx.fillStyle=p.c;ctx.font='700 22px "IBM Plex Sans Arabic",Tahoma';ctx.fillText(p.s,p.x,p.y);ctx.globalAlpha=1});
+    // HUD
+    ctx.fillStyle='rgba(6,58,99,.85)';ctx.beginPath();ctx.roundRect?ctx.roundRect(12,12,230,42,21):ctx.rect(12,12,230,42);ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='700 18px "IBM Plex Sans Arabic",Tahoma';ctx.fillText(`💧 النقاط: ${score}   ⏱ ${Math.ceil(time)}`,127,40)}
+  function loop(ts){const dt=Math.min(.05,(ts-last)/1000||0);last=ts;time-=dt;spawn-=dt;
+    if(spawn<=0){add();spawn=Math.max(.45,1.1-(45-time)*.014)}
+    if(keys.ArrowLeft)bucket.x-=420*dt;if(keys.ArrowRight)bucket.x+=420*dt;bucket.x=Math.max(bucket.w/2,Math.min(W-bucket.w/2,bucket.x));
+    drops.forEach(d=>d.y+=d.v*dt);
+    drops=drops.filter(d=>{if(d.y>H-110&&d.y<H-60&&Math.abs(d.x-bucket.x)<bucket.w/2+10){if(d.good){score++;S.plip();pops.push({x:d.x,y:d.y-30,s:'+1',c:'#2BB673',a:1})}else{score=Math.max(0,score-1);S.no();pops.push({x:d.x,y:d.y-30,s:'−1',c:'#F26B5B',a:1})}return false}return d.y<H+40});
+    pops.forEach(p=>{p.y-=40*dt;p.a-=dt*1.4});pops=pops.filter(p=>p.a>0);
+    draw();
+    if(time<=0){running=false;const m=score>=15?'🏆 بطلة الماء! ':score>=8?'🌟 رائع! ':'💪 أحسنتِ المحاولة! ';msg.textContent=`${m}جمعتِ ${score} قطرة صحيحة.`;ov.querySelector('h3').textContent='انتهى السباق';document.getElementById('raceGo').textContent='العبي مرة أخرى';ov.hidden=false;S.win();if(score>=8)confetti();return}
+    raf=requestAnimationFrame(loop)}
+  document.getElementById('raceGo').onclick=()=>{size();reset();ov.hidden=true;running=true;last=performance.now();S.c();raf=requestAnimationFrame(loop)};
+  const move=e=>{const r=cv.getBoundingClientRect();bucket&&(bucket.x=e.clientX-r.left)};
+  cv.addEventListener('pointermove',move);cv.addEventListener('pointerdown',move);
+  addEventListener('keydown',e=>{if(running&&(e.key==='ArrowLeft'||e.key==='ArrowRight')){keys[e.key]=true;e.preventDefault()}});
+  addEventListener('keyup',e=>keys[e.key]=false);
+  reset();draw();
+})();
+
+/* ---------- GROUP ---------- */
+(function(){
+  const QS=[['ما أول محطة في رحلة قطرة الماء؟','البحر'],['ما الذي يسخّن ماء البحر؟','الشمس'],['ماذا نسمي تحوّل الماء إلى بخار؟','التبخر'],['أين يذهب بخار الماء بعد التبخر؟','يصعد إلى السماء'],['ماذا نسمي تحوّل البخار إلى قطرات في الغيوم؟','التكاثف'],['ماذا نسمي نزول المطر؟','الهطول'],['اذكروا شكلين للهطول','المطر والبَرَد'],['على أي جبال عُمانية تهطل الأمطار في القصة؟','جبال الحجر'],['ما القناة التي تنقل الماء إلى المزارع في عُمان؟','الفلج'],['رتّبوا: هطول، تبخر، تكاثف','تبخر ← تكاثف ← هطول'],['لماذا لا ينتهي الماء على الأرض؟','لأنه يدور في دورة مستمرة'],['اذكروا طريقة نحافظ بها على الماء','إغلاق الصنبور / عدم الإسراف']];
+  const TEAMS=[['فريق الغيمة','#7B61FF'],['فريق المطر','#00B4D8'],['فريق الفلج','#2A9D8F'],['فريق البحر','#0077B6']];
+  let qi=0,sc=[0,0,0,0],t,left;const box=document.getElementById('teams');
+  box.innerHTML=TEAMS.map((tm,i)=>`<div class="team" style="--c:${tm[1]}"><div class="tank"><i id="tk${i}"></i><b id="ts${i}">0</b></div><h3>${tm[0]}</h3><button class="plus" data-i="${i}">+ نقطة</button></div>`).join('');
+  box.querySelectorAll('.plus').forEach(b=>b.onclick=()=>{const i=+b.dataset.i;sc[i]++;S.ok();upd()});
+  function upd(){sc.forEach((s,i)=>{document.getElementById('ts'+i).textContent=s;document.getElementById('tk'+i).style.height=Math.min(100,s/8*100)+'%'})}
+  function show(){clearInterval(t);if(qi>=QS.length){const m=Math.max(...sc),w=TEAMS.filter((_,i)=>sc[i]===m).map(x=>x[0]).join(' و ');document.getElementById('gNum').textContent='انتهت المسابقة';document.getElementById('gQ').textContent=m?`🏆 الفائز: ${w}`:'لا توجد نقاط بعد';document.getElementById('gA').textContent='';document.getElementById('gT').textContent='🎉';if(m){S.win();confetti()}return}
+    document.getElementById('gNum').textContent=`السؤال ${qi+1} من ${QS.length}`;document.getElementById('gQ').textContent=QS[qi][0];document.getElementById('gA').textContent='';left=20;document.getElementById('gT').textContent=left;
+    t=setInterval(()=>{left--;document.getElementById('gT').textContent=left;if(left<=5&&left>0)S.tick();if(left<=0){clearInterval(t);S.no();reveal()}},1000)}
+  function reveal(){clearInterval(t);if(qi>=0&&qi<QS.length)document.getElementById('gA').textContent='✅ الإجابة: '+QS[qi][1]}
+  document.getElementById('gShow').onclick=reveal;
+  document.getElementById('gNext').onclick=()=>{qi++;show()};
+  document.getElementById('gReset').onclick=()=>{qi=0;sc=[0,0,0,0];upd();show()};
+  // start paused: show first question without running timer until interaction
+  document.getElementById('gNum').textContent='جاهزات؟';document.getElementById('gQ').textContent='اضغطي «السؤال التالي» لبدء المسابقة';document.getElementById('gT').textContent='20';qi=-1;
+})();
+
+/* ---------- SOLO ---------- */
+(function(){
+  const QS=[
+    ['الشمس تسخّن ماء البحر فيتبخّر.',['صح','خطأ'],0],['تحوّل بخار الماء إلى قطرات في الغيوم يسمى…',['التكاثف','التبخر','الهطول'],0],
+    ['الغيوم تتكوّن من رمال صغيرة.',['صح','خطأ'],1],['نزول الماء من الغيوم يسمى…',['التكاثف','الهطول','التجمّد'],1],
+    ['من أشكال الهطول:',['المطر','البخار','الشمس'],0],['الفلج ينقل الماء إلى المزارع والبيوت.',['صح','خطأ'],0],
+    ['ما المرحلة التي تأتي بعد التبخر؟',['الهطول','التكاثف','التجمع'],1],['أين تتجمع مياه الأمطار؟',['في البحار والأودية والأفلاج','في الشمس','في الهواء فقط'],0],
+    ['دورة الماء تتكرر باستمرار.',['صح','خطأ'],0],['كيف نحافظ على الماء؟',['نترك الصنبور مفتوحًا','نغلق الصنبور بعد الاستخدام','نرمي النفايات في الفلج'],1]];
+  const box=document.getElementById('solo-box');let name='',qi,sc,t,left;const T=15;
+  function start(){box.innerHTML=`<div style="font-size:64px">💧</div><h3 style="font-size:32px;margin-bottom:10px">ما اسمك يا بطل الماء؟</h3><input id="nm" placeholder="اكتب اسمك هنا" maxlength="30" aria-label="اسم الطالب"><div style="margin-top:14px"><button class="btn" id="go">ابدأ المسابقة</button></div>`;
+    const go=()=>{name=(document.getElementById('nm').value||'').trim()||'بطل الماء';qi=0;sc=0;q()};document.getElementById('go').onclick=go;document.getElementById('nm').onkeydown=e=>{if(e.key==='Enter')go()}}
+  function q(){clearInterval(t);if(qi>=QS.length)return cert();const [qt,o,a]=QS[qi];left=T;
+    box.innerHTML=`<div style="display:flex;justify-content:space-between;font-weight:700"><span>${qi+1} / ${QS.length}</span><span class="stars">${'★'.repeat(sc)}<span style="opacity:.3">${'★'.repeat(QS.length-sc)}</span></span></div><div class="bar"><i id="sb"></i></div><div class="iq">${qt}</div><div class="og">${o.map((x,i)=>`<button class="opt" data-i="${i}">${x}</button>`).join('')}</div>`;
+    box.querySelectorAll('.opt').forEach(b=>b.onclick=()=>ans(+b.dataset.i));
+    requestAnimationFrame(()=>{const sb=document.getElementById('sb');sb.style.transition='none';sb.style.width='100%';requestAnimationFrame(()=>{sb.style.transition=`width ${T}s linear`;sb.style.width='0%'})});
+    t=setInterval(()=>{left--;if(left<=0){clearInterval(t);ans(-1)}},1000)}
+  function ans(i){clearInterval(t);const a=QS[qi][2],bs=box.querySelectorAll('.opt');bs.forEach(b=>b.disabled=true);bs[a].classList.add('ok');if(i===a){sc++;S.ok()}else{if(i>=0)bs[i].classList.add('no');S.no()}setTimeout(()=>{qi++;q()},1100)}
+  function cert(){const msg=sc>=9?'بطل الماء المتميز':sc>=6?'صديق قطرة الماء':'مستكشف الماء الصغير';
+    box.innerHTML=`<div id="cert"><svg width="70" height="86" viewBox="-30 -46 60 90" style="margin:0 auto"><path d="M0 -44 C 18 -18 28 -2 28 13 A28 28 0 0 1 -28 13 C -28 -2 -18 -18 0 -44Z" fill="#48CAE4" stroke="#0077B6" stroke-width="3"/><circle cx="-9" cy="1" r="3.4" fill="#0B2545"/><circle cx="11" cy="1" r="3.4" fill="#0B2545"/><path d="M-9 13 Q0 22 9 13" stroke="#0B2545" stroke-width="2.6" fill="none"/></svg>
+      <h3>شهادة تقدير</h3><div>تُمنح هذه الشهادة إلى</div><div class="nm"></div><div style="font-size:20px;font-weight:700">لقب «${msg}»</div><div style="margin:6px 0">لإجابته عن ${sc} من ${QS.length} في مسابقة «رحلة قطرة الماء»</div><div class="stars">${'★'.repeat(Math.round(sc/2))}</div><div style="margin-top:12px;font-weight:700;color:#0077B6">إعداد الأستاذة عبير صالح اليحمدية</div></div>
+      <div style="margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button class="btn alt" id="pr">🖨️ اطبع الشهادة</button><button class="btn" id="ag">العب مرة أخرى</button></div>`;
+    box.querySelector('.nm').textContent=name;document.getElementById('pr').onclick=()=>print();document.getElementById('ag').onclick=start;S.win();if(sc>=6)confetti()}
+  start();
+})();
+
+/* ---------- STORY ---------- */
+(function(){
+  const N={
+    s1:{k:'sea',amb:'sea',t:'في بحر عُمان الأزرق، عاشت قطرة ماء صغيرة اسمها لؤلؤة. كانت تحب الرقص مع الأمواج كل صباح.',c:[['ألعب مع الأمواج 🌊','s1b'],['أنظر إلى الشمس ☀️','s2']]},
+    s1b:{k:'sea',amb:'sea',t:'رقصت لؤلؤة مع الأمواج حتى تعبت، ثم رفعت رأسها فرأت الشمس تبتسم لها.',c:[['أتابع الرحلة ➜','s2']]},
+    s2:{k:'evap',amb:'sun',t:'أرسلت الشمس أشعتها الدافئة، فشعرت لؤلؤة بخفّة عجيبة… وتحوّلت إلى بخار يصعد إلى السماء! هذا هو «التبخّر».',c:[['أصعد إلى الأعلى ⬆','s3']]},
+    s3:{k:'cloud',amb:'wind',t:'في السماء الباردة، اجتمعت لؤلؤة مع صديقاتها القطرات، فكوّنّ غيمة كبيرة بيضاء. هذا هو «التكاثف».',c:[['أبقى في الغيمة ☁️','s3b'],['أسافر مع الريح 💨','s4']]},
+    s3b:{k:'cloud',amb:'wind',t:'بقيت لؤلؤة في الغيمة، لكن القطرات ازدادت وثقلت الغيمة… وجاءت الريح لتحملها نحو الجبال.',c:[['أذهب مع الريح ➜','s4']]},
+    s4:{k:'rain',amb:'rain',t:'فوق جبال الحجر، صارت الغيمة ثقيلة جدًا، فهطلت لؤلؤة مع صديقاتها مطرًا على الجبال. هذا هو «الهطول».',c:[['أنزل مع المطر 🌧️','s5']]},
+    s5:{k:'falaj',amb:'stream',t:'جرت لؤلؤة في الوادي حتى وصلت إلى الفلج، فسقت النخيل وفرح أهل القرية. هذا هو «التجمّع».',c:[['ماذا بعد؟ ➜','s6']]},
+    s6:{k:'end',amb:'sea',t:'وفي يوم، عادت لؤلؤة إلى البحر لتبدأ رحلتها من جديد. فالماء لا ينتهي… إنه يدور في دورة مستمرة!',c:[['سؤال الفهم ❓','q1']]},
+    q1:{k:'end',q:true,t:'سؤال: ما الذي جعل لؤلؤة تتحول إلى بخار؟',c:[['حرارة الشمس','q2',1],['برودة الجبال','q1',0]]},
+    q2:{k:'falaj',q:true,t:'سؤال: أين وصلت لؤلؤة لتسقي النخيل؟',c:[['إلى الفلج','fin',1],['إلى الصحراء','q2',0]]},
+    fin:{k:'end',amb:'sea',t:'🎉 أحسنت! فهمت رحلة لؤلؤة كاملة: تبخّر، تكاثف، هطول، تجمّع.',c:[]}
+  };
+  const order=['s1','s2','s3','s4','s5','s6'];
+  const scr=document.getElementById('stScreen'),tx=document.getElementById('stText'),ch=document.getElementById('stChoices'),dots=document.getElementById('stDots');
+  let cur='s1',started=false;
+  function go(id){cur=id;const n=N[id];scr.innerHTML=scene(n.k,'st'+id);scr.firstElementChild.classList.add('scene-in');tx.textContent=n.t;
+    if(started&&n.amb)S.ambient(n.amb);
+    ch.innerHTML='';n.c.forEach(([l,to,ok])=>{const b=document.createElement('button');b.className='btn'+(n.q?' alt':'');b.textContent=l;b.onclick=()=>{started=true;S.c();
+      if(n.q){if(ok){S.ok();go(to);if(to==='fin'){S.win();confetti()}}else{S.no();tx.textContent='حاول مرة أخرى 💡 '+n.t.replace('سؤال: ','')}}else{S.plip();go(to)}};ch.appendChild(b)});
+    const idx=order.indexOf(id.replace(/b$/,''));dots.innerHTML=order.map((_,i)=>`<span class="${i<=idx||id.startsWith('q')||id==='fin'?'on':''}"></span>`).join('');
+    if(window.speechSynthesis)speechSynthesis.cancel()}
+  document.getElementById('stVoice').onclick=()=>speak(N[cur].t);
+  document.getElementById('stRestart').onclick=()=>{S.stopAmb();go('s1')};
+  go('s1');
+})();
+function speak(t){if(!('speechSynthesis' in window)||!S.on)return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t.replace(/[^\u0600-\u06FF\s،.!؟]/g,''));u.lang='ar-SA';u.rate=.9;const v=speechSynthesis.getVoices().find(v=>v.lang&&v.lang.startsWith('ar'));if(v)u.voice=v;speechSynthesis.speak(u)}
+
+/* ---------- VIDEO ---------- */
+(function(){
+  const SC=[{k:'sea',a:'sea',d:9,t:'هذه لؤلؤة، قطرة ماء تعيش في بحر عُمان. هيا نرافقها في رحلتها العجيبة!'},
+    {k:'evap',a:'sun',d:10,t:'تسخّن الشمس ماء البحر، فتتحول لؤلؤة إلى بخار يصعد إلى السماء. هذا هو التبخّر.'},
+    {k:'cloud',a:'wind',d:10,t:'في السماء الباردة يتحول البخار إلى قطرات صغيرة تتجمع في الغيوم. هذا هو التكاثف.'},
+    {k:'rain',a:'rain',d:10,t:'تثقل الغيمة فوق جبال الحجر، فتهطل القطرات مطرًا. هذا هو الهطول.'},
+    {k:'falaj',a:'stream',d:10,t:'تجري المياه في الأودية والأفلاج، فتسقي النخيل والمزارع. هذا هو التجمّع.'},
+    {k:'end',a:'sea',d:9,t:'ثم تعود لؤلؤة إلى البحر لتبدأ من جديد. فلنحافظ على كل قطرة ماء!'}];
+  const total=SC.reduce((s,x)=>s+x.d,0);
+  const scr=document.getElementById('vScreen'),btn=document.getElementById('vPlay'),prog=document.getElementById('vProg'),tm=document.getElementById('vTime'),narr=document.getElementById('vNarr');
+  let pos=0,playing=false,last,cur=-1,raf;
+  function idxAt(p){let s=0;for(let i=0;i<SC.length;i++){s+=SC[i].d;if(p<s)return i}return SC.length-1}
+  function render(i){if(i===cur)return;cur=i;const s=SC[i];scr.innerHTML=scene(s.k,'v'+i)+`<div class="caption">${s.t}</div>`;scr.firstElementChild.classList.add('scene-in');
+    if(playing){S.ambient(s.a);S.plip();if(narr.checked)speak(s.t)}}
+  function fmt(p){p=Math.floor(p);return Math.floor(p/60)+':'+String(p%60).padStart(2,'0')}
+  function frame(ts){const dt=(ts-last)/1000;last=ts;pos+=dt;if(pos>=total){pos=total;stop();btn.textContent='↺ إعادة';return}
+    render(idxAt(pos));prog.style.width=(pos/total*100)+'%';tm.textContent=fmt(pos)+' / '+fmt(total);raf=requestAnimationFrame(frame)}
+  function stop(){playing=false;cancelAnimationFrame(raf);S.stopAmb();if(window.speechSynthesis)speechSynthesis.cancel()}
+  btn.onclick=()=>{if(playing){stop();btn.textContent='▶ تشغيل';return}if(pos>=total)pos=0;playing=true;S.c();btn.textContent='❚❚ إيقاف';cur=-1;last=performance.now();render(idxAt(pos));raf=requestAnimationFrame(frame)};
+  document.getElementById('vBar').onclick=e=>{const r=e.currentTarget.getBoundingClientRect();let f=(r.right-e.clientX)/r.width;pos=Math.max(0,Math.min(total-.01,f*total));cur=-1;render(idxAt(pos));prog.style.width=(pos/total*100)+'%';tm.textContent=fmt(pos)+' / '+fmt(total)};
+  render(0);tm.textContent='0:00 / '+fmt(total);
+})();
+
+/* ---------- LIBRARY ---------- */
+const LIB=[['📝','خطة الدرس','plan'],['🗺️','لعبة المغامرة','adv'],['🏁','سباق التجميع','race'],['👥','المسابقة الجماعية','group'],['⭐','المسابقة الفردية','solo'],['📖','القصة التفاعلية','story'],['🎬','الفيديو','video']];
+const lib=document.getElementById('lib');
+LIB.forEach(([e,t,k])=>{const c=document.createElement('div');c.className='lcard';c.innerHTML=`<h3><span>${e}</span>${t}</h3><p></p><button class="copy">نسخ البرومبت</button>`;c.querySelector('p').textContent=P[k];bindCopy(c.querySelector('button'),()=>P[k],'نسخ البرومبت');lib.appendChild(c)});
+</script>
+</body>
+</html>
